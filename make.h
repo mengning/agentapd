@@ -26,13 +26,17 @@ endif
 ##########################
 
 # Common header files/include directories and dependencies
-#SUB_DIR	= ${BASE_DIR}/subdir
+UTILS_DIR	= ${BASE_DIR}/utils
+COMMON_DIR	= ${BASE_DIR}/common
 
-COMMON_INCLUDE_DIRS 		= 	-I${BASE_DIR}		#\
-								#-I$(SUB_DIR)				
+COMMON_INCLUDE_DIRS 		= 	-I${BASE_DIR}		\
+								-I$(UTILS_DIR)	    \
+								-I$(COMMON_DIR)
+											
 
 # Common libs Definitions
-
+UTILS_LIB = utils.a
+COMMON_LIB = common.a
 
 ##########################
 # Compilation FlagS.     #
