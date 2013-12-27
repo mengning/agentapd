@@ -60,6 +60,7 @@ CC_WARNING_FLAGS             = #-ansi                         \
                                -fno-common                   \
                                -W
 CC_PTHREAD_FLAGS			 = -lpthread
+CC_NETLINK_FLAGS             = -lnl
 CC_FLAGS                     = -c ${CC_DEBUG_FLAGS}          \
                                   ${CC_OPTIMIZATION_FLAGS}   \
                                   ${CC_WARNING_FLAGS}

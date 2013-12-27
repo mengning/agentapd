@@ -9,7 +9,7 @@
 #ifndef WPA_DEBUG_H
 #define WPA_DEBUG_H
 
-/* #include "wpabuf.h" */
+#include "wpabuf.h"
 #define CONFIG_NO_STDOUT_DEBUG
 
 /* Debugging function - conditional printf and hex dump. Driver wrappers can
