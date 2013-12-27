@@ -30,7 +30,7 @@
 #include "utils/list.h"
 #include "common/ieee802_11_defs.h"
 #include "common/ieee802_11_common.h"
-#include "l2_packet/l2_packet.h"
+#include "utils/l2_packet.h"
 #include "netlink.h"
 #include "linux_ioctl.h"
 #include "radiotap.h"

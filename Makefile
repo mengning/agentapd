@@ -5,7 +5,7 @@ include ./make.h
 
 TARGETS	 =  agentapd
 
-COMMON_OBJS = 
+COMMON_OBJS = rfkill.o netlink.o drivers.o driver_nl80211.o linux_ioctl.o
 OBJS = $(COMMON_OBJS) $(COMMON_LIB) $(UTILS_LIB) main.o
 
 all: $(LIBS) $(TARGETS)

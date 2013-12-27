@@ -45,7 +45,7 @@ COMMON_LIB = common.a
 ifeq (${TARGET_OS}, OS_PTHREADS)
 CC_DEBUG_FLAGS               = -g
 CC_OPTIMIZATION_FLAGS         = -O2
-CC_WARNING_FLAGS             = -ansi                         \
+CC_WARNING_FLAGS             = #-ansi                         \
                                -Wall                         \
                                -Wunused                      \
                                -Wmissing-declarations        \
