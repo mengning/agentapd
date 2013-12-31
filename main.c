@@ -30,3 +30,14 @@ int main()
 	printf("NL80211 initialized\n");
     return 0;
 }
+
+void wpa_supplicant_event(void *ctx, enum wpa_event_type event,
+			  union wpa_event_data *data)
+{
+    return;
+}
+
+void wpa_scan_results_free(struct wpa_scan_results *res)
+{
+    return;   
+}
