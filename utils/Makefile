@@ -4,7 +4,7 @@
 include ../make.h
 
 
-OBJS = common.o os_unix.o radiotap.o eloop.o trace.o l2_packet_linux.o wpabuf.o
+OBJS = common.o os_unix.o radiotap.o eloop.o trace.o l2_packet_linux.o wpabuf.o wpa_debug.o
 
 all:	$(OBJS) 
 	$(AR) $(AR_FLAGS) $(UTILS_LIB) $(OBJS) 

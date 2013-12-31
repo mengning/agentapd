@@ -8749,7 +8749,7 @@ static void * nl80211_global_init(void)
 {
 	struct nl80211_global *global;
 	struct netlink_config *cfg;
-
+    wpa_printf(MSG_DEBUG,"NL80211:nl80211_global_init start\n");
 	global = os_zalloc(sizeof(*global));
 	if (global == NULL)
 		return NULL;
