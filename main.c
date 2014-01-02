@@ -6,6 +6,12 @@
 #include<string.h>			/* memset */
 
 #include"driver.h"
+
+struct hostapd_data
+{
+    int data;
+};
+
 extern struct wpa_driver_ops *wpa_drivers[];
 /*
  * Ä£·Âhostapdµ÷ÓÃdriver
@@ -22,10 +28,20 @@ int main()
 		{
 			void * p = wpa_drivers[i]->global_init();
 			if (p == NULL) {
-				printf("Failed to initialize\n");
+				printf("global_init Failed to initialize\n");
 				return -1;
 			}
 		}
+		struct hostapd_data hapd;
+		struct wpa_init_params params;
+		if (wpa_drivers[i]->hapd_init) 
+		{
+			void * p = wpa_drivers[i]->hapd_init(&hapd,&params);
+			if (p == NULL) {
+				printf("hapd_init Failed to initialize\n");
+				return -1;
+			}		    
+		}		    
 	}
 	printf("NL80211 initialized\n");
     return 0;
