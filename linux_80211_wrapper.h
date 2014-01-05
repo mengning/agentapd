@@ -31,6 +31,10 @@ int nl_send_wrapper(struct nl_handle *handle, struct nl_msg *msg);
 int nl_recv_wrapper(struct nl_handle *handle, struct nl_cb *cb);
 void nl_destroy_handles(struct nl_handle **handle);
 
+int nl_get_multicast_id(struct nl_cb *nl_cb,
+			        struct nl_handle *nl_handle,
+			       const char *family, const char *group);
+
 typedef void (*eloop_sock_handler)(int sock, void *eloop_data, void *user_data);
 int epoll_wrapper(int sock, eloop_sock_handler handler,
 			     void *eloop_data, void *user_data);
