@@ -36,7 +36,7 @@ int nl_get_multicast_id(struct nl_cb *nl_cb,
 			       const char *family, const char *group);
 
 typedef void (*eloop_sock_handler)(int sock, void *eloop_data, void *user_data);
-int epoll_wrapper(int sock, eloop_sock_handler handler,
+int eloop_register_wrapper(int sock, eloop_sock_handler handler,
 			     void *eloop_data, void *user_data);
 
 #endif /* LINUX_80211_WRAPPER_H */

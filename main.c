@@ -161,7 +161,7 @@ int main()
           no_seq_check, NULL);
     nl_cb_set(nl_cb, NL_CB_VALID, NL_CB_CUSTOM,
           process_event, NULL); 
-    epoll_wrapper(nl_socket_get_fd(nl_handle),
+    eloop_register_wrapper(nl_socket_get_fd(nl_handle),
 				 nl80211_event_receive,
 				 nl_cb, nl_handle);
 

@@ -116,7 +116,7 @@ int nl_recv_wrapper(struct nl_handle *handle, struct nl_cb *cb)
     return nl_recvmsgs(handle,cb);
 }
 
-int epoll_wrapper(int sock, eloop_sock_handler handler,
+int eloop_register_wrapper(int sock, eloop_sock_handler handler,
 			     void *eloop_data, void *user_data)
 {
     return eloop_register_read_sock(sock,handler,eloop_data,user_data);
