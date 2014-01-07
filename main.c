@@ -63,7 +63,9 @@ int main()
     struct dl_list interfaces;
 	int if_add_ifindex = -1;
     dl_list_init(&interfaces);
-
+/*
+ * global_init
+ */
     ret = netlink_init_nl80211_event_rtm(&netlink,NULL,nl80211_event_rtm_newlink,nl80211_event_rtm_dellink);
     if (ret == -1 || netlink == NULL) 
     {
@@ -91,6 +93,10 @@ int main()
         perror("socket(PF_INET,SOCK_DGRAM)");
         goto err;
 	}
+/*
+ * hapd_init
+ */
+    
 	eloop_run();
     return 0;
 err:
