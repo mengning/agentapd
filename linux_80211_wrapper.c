@@ -27,6 +27,7 @@
 #include "common/ieee802_11_defs.h"
 #include "common/ieee802_11_common.h"
 #include "utils/l2_packet.h"
+#include "netlink.h"
 #include "linux_80211_wrapper.h"
 
 #ifdef CONFIG_LIBNL20
@@ -121,6 +122,12 @@ int eloop_register_wrapper(int sock, eloop_sock_handler handler,
 {
     return eloop_register_read_sock(sock,handler,eloop_data,user_data);
 }
+
+int no_seq_check(struct nl_msg *msg, void *arg)
+{
+    return NL_OK;
+}
+
 /* nl80211 code */
 static int ack_handler(struct nl_msg *msg, void *arg)
 {
@@ -240,3 +247,99 @@ nla_put_failure:
 	return ret;
 }
 
+int nl80211_init_event(struct nl_cb ** nl_cb,struct nl_handle ** nl_handle)
+{
+    int ret;
+    
+    *nl_cb = nl_cb_alloc(NL_CB_DEFAULT);
+    if (*nl_cb == NULL) 
+    {
+        wpa_printf(MSG_ERROR, "nl80211: Failed to allocate netlink "
+               "callbacks");
+        return -1;
+    }
+    *nl_handle = nl_create_handle(*nl_cb,"nl80211");
+    if (*nl_handle == NULL)
+    {
+        goto err;
+    }
+    ret = nl_get_multicast_id(*nl_cb, *nl_handle, "nl80211", "scan");
+    if (ret >= 0)
+    {
+        ret = nl_socket_add_membership(*nl_handle, ret);
+    }
+	if (ret < 0) 
+	{
+        wpa_printf(MSG_ERROR, "nl80211: Could not add multicast "
+               "membership for scan events: %d (%s)",
+               ret, strerror(-ret));
+        goto err;
+    }
+
+    ret = nl_get_multicast_id(*nl_cb, *nl_handle, "nl80211", "mlme");
+	if (ret >= 0)
+	{
+        ret = nl_socket_add_membership(*nl_handle, ret);
+    }
+    if (ret < 0) 
+    {
+        wpa_printf(MSG_ERROR, "nl80211: Could not add multicast "
+               "membership for mlme events: %d (%s)",
+               ret, strerror(-ret));
+        goto err;
+    }
+
+    ret = nl_get_multicast_id(*nl_cb, *nl_handle, "nl80211", "regulatory");
+    if (ret >= 0)
+    {
+        ret = nl_socket_add_membership(*nl_handle, ret);
+    }
+	if (ret < 0) 
+	{
+        wpa_printf(MSG_DEBUG, "nl80211: Could not add multicast "
+               "membership for regulatory events: %d (%s)",
+               ret, strerror(-ret));
+        /* Continue without regulatory events */
+    } 
+    return 0;
+err:
+    nl_destroy_handles(nl_handle);
+    nl_cb_put(*nl_cb);
+    *nl_cb = NULL;
+    return -1;      
+}
+
+int netlink_init_nl80211_event_rtm(struct netlink_data ** netlink,void * ctx,
+                                    nl80211_event_rtm_handler newlink,
+                                    nl80211_event_rtm_handler dellink)
+{
+    struct netlink_config * cfg;
+    cfg = os_zalloc(sizeof(struct netlink_config));
+    if (cfg == NULL)
+    {
+        goto err;
+    }
+    
+    cfg->ctx = ctx;
+    cfg->newlink_cb = newlink;
+    cfg->dellink_cb = dellink;
+    *netlink = netlink_init(cfg);
+    if (*netlink == NULL) 
+    {
+        os_free(cfg);
+        goto err;
+    }
+    return 0;
+err:
+    return -1;   
+}
+int init_ioctl_sock()
+{
+    int ioctl_sock = socket(PF_INET, SOCK_DGRAM, 0);
+    if (ioctl_sock < 0) 
+	{
+        perror("socket(PF_INET,SOCK_DGRAM)");
+        return -1;
+	}
+	return ioctl_sock;
+}

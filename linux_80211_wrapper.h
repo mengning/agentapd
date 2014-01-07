@@ -38,5 +38,14 @@ int nl_get_multicast_id(struct nl_cb *nl_cb,
 typedef void (*eloop_sock_handler)(int sock, void *eloop_data, void *user_data);
 int eloop_register_wrapper(int sock, eloop_sock_handler handler,
 			     void *eloop_data, void *user_data);
+			     
+int nl80211_init_event(struct nl_cb ** nl_cb,struct nl_handle ** nl_handle);
+
+typedef void (*nl80211_event_rtm_handler)(void *ctx, struct ifinfomsg *ifi, u8 *buf, size_t len);
+int netlink_init_nl80211_event_rtm(struct netlink_data ** netlink,void * ctx,
+                                    nl80211_event_rtm_handler newlink,
+                                    nl80211_event_rtm_handler dellink );
+int init_ioctl_sock();
+int no_seq_check(struct nl_msg *msg, void *arg);
 
 #endif /* LINUX_80211_WRAPPER_H */
